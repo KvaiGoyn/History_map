@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Интерактивная историческая карта Санкт-Петербурга с маршрутом по знаковым локациям. Откройте для себя факты о достопримечательностях.">
+    <meta name="keywords" content="Санкт-Петербург, история, карта, достопримечательности, Яндекс.Карты, интерактивная карта">
+    <meta name="author" content="Историческая карта Санкт-Петербурга">
+    <meta property="og:title" content="Историческая карта Санкт-Петербурга">
+    <meta property="og:description" content="Интерактивная карта с точками интереса и фактами о исторических местах Санкт-Петербурга.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://example.com">
+    <meta property="og:image" content="https://example.com/images/screenshot_map.png">
+    <title>Историческая карта Санкт-Петербурга</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <!-- Яндекс.Карты API (замените YOUR_API_KEY на ваш ключ с https://developer.tech.yandex.ru/) -->
+    <script src="https://api-maps.yandex.ru/2.1/?apikey=8c0693ea-8279-4d14-a26e-c2089f8c9828&lang=ru_RU" type="text/javascript"></script>
+    <!-- Если нет ключ ита, карта не загрузится. Для тестирования можно использовать демо-ключ (не гарантируется работа). -->
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+</head>
+<body>
+    <!-- Индикатор загрузки -->
+    <div id="loader" class="loader">
+        <div class="loader-spinner"></div>
+        <p>Загрузка карты...</p>
+    </div>
+    <div id="map"></div>
+
+    <!-- Модальное окно -->
+    <div id="modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <img id="modal-image" src="" alt="Фото локации">
+            <div class="swiper">
+                <div class="swiper-wrapper">
+                    <!-- Факты будут вставлены динамически -->
+                </div>
+                <div class="swiper-pagination"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Контейнер для статических оверлеев (инфо-окон) -->
+    <div id="overlays" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 500;"></div>
+
+    <!-- Swiper JS -->
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
