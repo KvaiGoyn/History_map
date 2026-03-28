@@ -345,6 +345,7 @@ const App = {
 
             placemark.events.add('click', () => this.showLocation(loc));
             this.map.geoObjects.add(placemark);
+            console.log('Метка добавлена:', loc.title, loc.coordinates);
 
             // Создаём оверлей
             const overlayElement = document.createElement('div');
