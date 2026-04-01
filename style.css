@@ -53,6 +53,8 @@ html, body {
     border-radius: 16px;
     width: 90%;
     max-width: 800px;
+    max-height: 90vh;
+    overflow-y: auto;
     padding: 2.5rem;
     position: relative;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
@@ -284,10 +286,12 @@ html, body {
 @media (max-width: 768px) {
     .modal-content {
         width: 95%;
+        max-width: calc(100vw - 40px);
         padding: 1.8rem;
         border-radius: 14px;
         max-height: 90vh;
         overflow-y: auto;
+        margin: 0 auto;
     }
 
     #modal-image {
@@ -328,8 +332,10 @@ html, body {
     .modal-content {
         padding: 1.2rem;
         width: 98%;
+        max-width: calc(100vw - 20px);
         max-height: 85vh;
         overflow-y: auto;
+        margin: 0 auto;
     }
 
     #modal-image {
@@ -478,5 +484,30 @@ html, body {
 
 .error-message button:hover {
     background: #0056b3;
+}
+
+/* Кастомный скроллбар для модального окна */
+.modal-content::-webkit-scrollbar {
+    width: 10px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+.modal-content::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Для Firefox */
+.modal-content {
+    scrollbar-width: thin;
+    scrollbar-color: #888 #f1f1f1;
 }
 
