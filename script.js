@@ -8,6 +8,7 @@ const App = {
     locations: [],
     loader: null,
     currentRoute: null,
+    swiper: null, // Экземпляр Swiper для карусели фактов
     // Вспомогательные функции для маршрута
     // Расстояние между двумя координатами в метрах (формула гаверсинусов)
     calculateDistance(coord1, coord2) {
@@ -53,6 +54,8 @@ const App = {
         this.closeBtn = document.querySelector('.close');
         this.modalImage = document.getElementById('modal-image');
         this.loader = document.getElementById('loader');
+        // Контейнер Swiper для карусели фактов
+        this.swiperContainer = document.querySelector('.factsSwiper');
     },
 
     // Навесить обработчики событий
@@ -76,6 +79,73 @@ const App = {
                 this.hideModal();
             }
         });
+    },
+
+    // Инициализация Swiper карусели для фактов
+    initSwiper() {
+        console.log('initSwiper вызван');
+        if (!this.swiperContainer) {
+            console.warn('Контейнер Swiper не найден.', this.swiperContainer);
+            return;
+        }
+        console.log('Контейнер Swiper найден:', this.swiperContainer);
+        // Проверить доступность Swiper глобально
+        if (typeof Swiper === 'undefined') {
+            console.error('Библиотека Swiper не загружена.');
+            return;
+        }
+        // Уничтожить предыдущий экземпляр Swiper, если существует
+        if (this.swiper && typeof this.swiper.destroy === 'function') {
+            this.swiper.destroy(true, true);
+        }
+        // Создать новый экземпляр Swiper с настройками
+        this.swiper = new Swiper(this.swiperContainer, {
+            // Направление горизонтальное
+            direction: 'horizontal',
+            // Зациклить слайды
+            loop: true,
+            // Автопрокрутка с интервалом 4 секунды
+            autoplay: {
+                delay: 4000,
+                disableOnInteraction: false,
+                pauseOnMouseEnter: true,
+            },
+            // Скорость перехода
+            speed: 500,
+            // Пагинация (точки)
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            // Навигационные кнопки
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            // Адаптивные настройки
+            breakpoints: {
+                // при ширине экрана >= 320px
+                320: {
+                    slidesPerView: 1,
+                    spaceBetween: 10,
+                },
+                // при ширине экрана >= 768px
+                768: {
+                    slidesPerView: 1,
+                    spaceBetween: 15,
+                },
+                // при ширине экрана >= 1024px
+                1024: {
+                    slidesPerView: 1,
+                    spaceBetween: 20,
+                },
+            },
+            // Эффект перехода (по умолчанию 'slide')
+            effect: 'slide',
+            // Включить отладку
+            debugger: true,
+        });
+        console.log('Swiper инициализирован с упрощённой конфигурацией');
     },
 
     // Инициализация Яндекс.Карт
@@ -424,18 +494,22 @@ const App = {
         if (modalHistoricalData) modalHistoricalData.textContent = location.historical_data || 'Не указано';
         if (modalArchitecturalFeatures) modalArchitecturalFeatures.textContent = location.architectural_features || 'Не указано';
 
-        // Очистить и заполнить список фактов
-        const factsList = document.querySelector('.facts-list');
-        if (factsList) {
-            factsList.innerHTML = '';
+        // Очистить и заполнить карусель фактов
+        const swiperWrapper = document.querySelector('.factsSwiper .swiper-wrapper');
+        console.log('swiperWrapper:', swiperWrapper);
+        if (swiperWrapper) {
+            swiperWrapper.innerHTML = '';
+            console.log('Фактов:', location.facts.length);
             location.facts.forEach(fact => {
-                const factItem = document.createElement('div');
-                factItem.className = 'fact-item';
-                factItem.textContent = fact;
-                factsList.appendChild(factItem);
+                const slide = document.createElement('div');
+                slide.className = 'swiper-slide';
+                slide.textContent = fact;
+                swiperWrapper.appendChild(slide);
             });
+            // Инициализировать или обновить Swiper
+            this.initSwiper();
         } else {
-            console.warn('Элемент .facts-list не найден.');
+            console.warn('Контейнер Swiper не найден.');
         }
 
         // Показать модальное окно

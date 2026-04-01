@@ -14,6 +14,8 @@
     <title>Историческая карта Санкт-Петербурга</title>
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
     <!-- Яндекс.Карты API (замените YOUR_API_KEY на ваш ключ с https://developer.tech.yandex.ru/) -->
     <script src="https://api-maps.yandex.ru/2.1/?apikey=8c0693ea-8279-4d14-a26e-c2089f8c9828&lang=ru_RU" type="text/javascript"></script>
     <!-- Если нет ключ ита, карта не загрузится. Для тестирования можно использовать демо-ключ (не гарантируется работа). -->
@@ -52,12 +54,24 @@
                     </div>
                 </div>
             </div>
-            <div class="facts-list" role="region" aria-label="Список фактов">
-                <!-- Факты будут вставлены динамически -->
+            <div class="facts-carousel" role="region" aria-label="Карусель фактов">
+                <!-- Контейнер Swiper -->
+                <div class="swiper factsSwiper">
+                    <div class="swiper-wrapper">
+                        <!-- Слайды будут вставлены динамически -->
+                    </div>
+                    <!-- Пагинация (точки) -->
+                    <div class="swiper-pagination"></div>
+                    <!-- Навигационные кнопки (опционально) -->
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-button-prev"></div>
+                </div>
             </div>
         </div>
     </div>
 
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

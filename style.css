@@ -156,34 +156,85 @@ html, body {
     line-height: 1.4;
 }
 
-/* Список фактов */
-.facts-list {
+/* Карусель фактов (Swiper) */
+.facts-carousel {
     width: 100%;
     margin-top: 0.8rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
-    /* Ограниченная высота с внутренней прокруткой */
-    max-height: 200px;
-    overflow-y: auto;
-    padding-right: 4px;
     flex-shrink: 0;
 }
 
-.fact-item {
+.factsSwiper {
+    width: 100%;
+    height: 120px; /* Фиксированная высота карусели */
+    border-radius: 12px;
+    overflow: hidden;
     background: #f8f9fa;
-    border-left: 4px solid #4a90e2;
-    border-radius: 8px;
-    padding: 0.5rem 0.8rem;
-    font-size: 0.85rem;
-    line-height: 1.25;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.swiper-slide {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.4;
     color: #333;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    background: #ffffff;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    user-select: none;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: 100% !important;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+.swiper-slide:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Пагинация (точки) */
+.swiper-pagination {
+    position: relative;
+    margin-top: 0.5rem;
+}
+
+.swiper-pagination-bullet {
+    background: #4a90e2;
+    opacity: 0.5;
+    width: 8px;
+    height: 8px;
+}
+
+.swiper-pagination-bullet-active {
+    opacity: 1;
+    background: #2c6cb0;
+}
+
+/* Навигационные кнопки */
+.swiper-button-next,
+.swiper-button-prev {
+    color: #4a90e2;
+    background: rgba(255, 255, 255, 0.8);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     transition: background 0.2s ease;
 }
 
-.fact-item:hover {
-    background: #e9ecef;
+.swiper-button-next:after,
+.swiper-button-prev:after {
+    font-size: 1rem;
+}
+
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+    background: rgba(255, 255, 255, 1);
 }
 
 /* Стили для статических оверлеев (инфо-окон) */
@@ -297,14 +348,17 @@ html, body {
         font-size: 1.4rem;
     }
 
-    .facts-list {
-        max-height: 150px; /* Меньше на мобильных */
-        gap: 0.25rem;
+    .facts-carousel {
+        margin-top: 0.6rem;
     }
 
-    .fact-item {
-        padding: 0.4rem 0.7rem;
-        font-size: 0.8rem;
+    .factsSwiper {
+        height: 100px; /* Уменьшенная высота на мобильных */
+    }
+
+    .swiper-slide {
+        font-size: 0.85rem;
+        padding: 0.8rem;
     }
 
     .close {
@@ -353,14 +407,28 @@ html, body {
         font-size: 0.85rem;
     }
 
-    .facts-list {
-        max-height: 120px; /* Ещё меньше на очень маленьких экранах */
-        gap: 0.2rem;
+    .facts-carousel {
+        margin-top: 0.5rem;
     }
 
-    .fact-item {
-        padding: 0.35rem 0.6rem;
-        font-size: 0.75rem;
+    .factsSwiper {
+        height: 90px; /* Ещё меньше на очень маленьких экранах */
+    }
+
+    .swiper-slide {
+        font-size: 0.8rem;
+        padding: 0.6rem;
+    }
+
+    .swiper-button-next,
+    .swiper-button-prev {
+        width: 30px;
+        height: 30px;
+    }
+
+    .swiper-button-next:after,
+    .swiper-button-prev:after {
+        font-size: 0.9rem;
     }
 
     .close {
