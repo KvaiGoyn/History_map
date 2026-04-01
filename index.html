@@ -17,8 +17,6 @@
     <!-- Яндекс.Карты API (замените YOUR_API_KEY на ваш ключ с https://developer.tech.yandex.ru/) -->
     <script src="https://api-maps.yandex.ru/2.1/?apikey=8c0693ea-8279-4d14-a26e-c2089f8c9828&lang=ru_RU" type="text/javascript"></script>
     <!-- Если нет ключ ита, карта не загрузится. Для тестирования можно использовать демо-ключ (не гарантируется работа). -->
-    <!-- Swiper CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
 </head>
 <body>
     <!-- Индикатор загрузки -->
@@ -54,17 +52,12 @@
                     </div>
                 </div>
             </div>
-            <div class="swiper" role="region" aria-label="Карусель фактов">
-                <div class="swiper-wrapper">
-                    <!-- Факты будут вставлены динамически -->
-                </div>
-                <div class="swiper-pagination"></div>
+            <div class="facts-list" role="region" aria-label="Список фактов">
+                <!-- Факты будут вставлены динамически -->
             </div>
         </div>
     </div>
 
-    <!-- Swiper JS -->
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

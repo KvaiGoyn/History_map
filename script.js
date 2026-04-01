@@ -5,7 +5,6 @@ const App = {
     modal: null,
     closeBtn: null,
     modalImage: null,
-    swiper: null,
     locations: [],
     loader: null,
     currentRoute: null,
@@ -425,48 +424,22 @@ const App = {
         if (modalHistoricalData) modalHistoricalData.textContent = location.historical_data || 'Не указано';
         if (modalArchitecturalFeatures) modalArchitecturalFeatures.textContent = location.architectural_features || 'Не указано';
 
-        // Очистить и заполнить карусель фактов
-        const swiperWrapper = document.querySelector('.swiper-wrapper');
-        if (swiperWrapper) {
-            swiperWrapper.innerHTML = '';
+        // Очистить и заполнить список фактов
+        const factsList = document.querySelector('.facts-list');
+        if (factsList) {
+            factsList.innerHTML = '';
             location.facts.forEach(fact => {
-                const slide = document.createElement('div');
-                slide.className = 'swiper-slide';
-                slide.textContent = fact;
-                swiperWrapper.appendChild(slide);
+                const factItem = document.createElement('div');
+                factItem.className = 'fact-item';
+                factItem.textContent = fact;
+                factsList.appendChild(factItem);
             });
         } else {
-            console.warn('Элемент .swiper-wrapper не найден.');
+            console.warn('Элемент .facts-list не найден.');
         }
-
-        // Инициализировать или обновить Swiper
-        this.initSwiper();
 
         // Показать модальное окно
         this.modal.classList.remove('hidden');
-    },
-
-    // Инициализация Swiper
-    initSwiper() {
-        if (this.swiper) {
-            this.swiper.update();
-        } else {
-            // Определяем количество слайдов
-            const slideCount = document.querySelectorAll('.swiper-slide').length;
-            // Отключаем loop, если слайдов меньше 3 (иначе Swiper выдаёт предупреждение)
-            const enableLoop = slideCount >= 3;
-            this.swiper = new Swiper('.swiper', {
-                direction: 'horizontal',
-                loop: enableLoop,
-                pagination: {
-                    el: '.swiper-pagination',
-                    clickable: true,
-                },
-                autoplay: {
-                    delay: 5000,
-                },
-            });
-        }
     },
 
     // Показать индикатор загрузки
