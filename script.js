@@ -251,6 +251,10 @@ const App = {
             coordinates: metadata.coordinates || [0, 0],
             image: metadata.image || '',
             order: metadata.order || 0,
+            construction_date: metadata.construction_date || '',
+            architect: metadata.architect || '',
+            historical_data: metadata.historical_data || '',
+            architectural_features: metadata.architectural_features || '',
             facts: facts
         };
         console.log('Распарсена локация:', location);
@@ -282,11 +286,19 @@ const App = {
     generateBalloonContent(location) {
         const firstFact = location.facts.length > 0 ? location.facts[0] : 'Интересный факт отсутствует.';
         const imageUrl = location.image || 'https://via.placeholder.com/280x160/4a90e2/ffffff?text=No+Image';
+        const constructionDate = location.construction_date ? `<p><strong>Дата строительства:</strong> ${location.construction_date}</p>` : '';
+        const architect = location.architect ? `<p><strong>Архитектор:</strong> ${location.architect}</p>` : '';
+        const historicalData = location.historical_data ? `<p><strong>Исторические данные:</strong> ${location.historical_data}</p>` : '';
+        const architecturalFeatures = location.architectural_features ? `<p><strong>Архитектурные особенности:</strong> ${location.architectural_features}</p>` : '';
         return `
             <div class="balloon-custom">
                 <img src="${imageUrl}" alt="${location.title}">
                 <div class="balloon-content">
                     <h3>${location.title}</h3>
+                    ${constructionDate}
+                    ${architect}
+                    ${historicalData}
+                    ${architecturalFeatures}
                     <p>${firstFact}</p>
                 </div>
                 <div class="balloon-footer">
@@ -296,25 +308,8 @@ const App = {
         `;
     },
 
-    // Создание HTML для оверлея
-    createOverlayHTML(location) {
-        const firstFact = location.facts.length > 0 ? location.facts[0] : 'Интересный факт отсутствует.';
-        const imageUrl = location.image || 'https://via.placeholder.com/300x180/4a90e2/ffffff?text=No+Image';
-        return `
-            <div class="overlay-container">
-                <img src="${imageUrl}" alt="${location.title}">
-                <div class="overlay-content">
-                    <h3>${location.title}</h3>
-                    <p>${firstFact}</p>
-                </div>
-                <div class="overlay-footer">
-                    Кликните на метку для подробностей
-                </div>
-            </div>
-        `;
-    },
 
-    // Добавление меток и статических оверлеев
+    // Добавление меток
     addPlacemarks() {
         if (!this.map) {
             console.error('Карта не инициализирована.');
@@ -325,13 +320,7 @@ const App = {
             return;
         }
 
-        const overlaysContainer = document.getElementById('overlays');
-        if (!overlaysContainer) {
-            console.error('Контейнер для оверлеев не найден.');
-            return;
-        }
-
-        this.locations.forEach((loc, index) => {
+        this.locations.forEach((loc) => {
             // Создаём метку для клика
             const placemark = new ymaps.Placemark(
                 loc.coordinates,
@@ -346,55 +335,9 @@ const App = {
             placemark.events.add('click', () => this.showLocation(loc));
             this.map.geoObjects.add(placemark);
             console.log('Метка добавлена:', loc.title, loc.coordinates);
-
-            // Создаём оверлей
-            const overlayElement = document.createElement('div');
-            overlayElement.className = 'overlay-container';
-            overlayElement.innerHTML = this.createOverlayHTML(loc);
-            overlaysContainer.appendChild(overlayElement);
-
-            // Позиционируем оверлей
-            this.positionOverlay(overlayElement, loc.coordinates, index);
         });
     },
 
-    // Позиционирование оверлея на карте
-    positionOverlay(element, coordinates, index) {
-        try {
-            // Преобразуем координаты в пиксели относительно контейнера карты
-            console.log('positionOverlay called', coordinates, this.map.converter);
-            let pixelPosition;
-            // Пробуем использовать coordinatesToPixel, если доступен
-            if (this.map.converter && this.map.converter.coordinatesToPixel) {
-                pixelPosition = this.map.converter.coordinatesToPixel(coordinates);
-            } else if (this.map.converter && this.map.converter.globalToPage) {
-                // fallback на globalToPage (старый метод)
-                pixelPosition = this.map.converter.globalToPage(coordinates);
-                // Вычитаем позицию контейнера карты, чтобы получить относительные координаты
-                const container = this.map.getContainer();
-                if (container && container.getBoundingClientRect) {
-                    const containerRect = container.getBoundingClientRect();
-                    pixelPosition[0] -= containerRect.left;
-                    pixelPosition[1] -= containerRect.top;
-                }
-            } else {
-                console.error('converter methods not found, using fallback');
-                // Простой fallback: размещаем оверлеи в углу
-                pixelPosition = [100 + index * 280, 100 + index * 100];
-            }
-            // Смещаем, чтобы оверлей не перекрывал метку
-            const offsetX = -130; // половина ширины оверлея (260px)
-            const offsetY = -180 - index * 15; // выше метки, меньше смещение
-            element.style.left = (pixelPosition[0] + offsetX) + 'px';
-            element.style.top = (pixelPosition[1] + offsetY) + 'px';
-            console.log('positioned at', element.style.left, element.style.top, 'from pixel', pixelPosition);
-        } catch (error) {
-            console.error('Ошибка позиционирования оверлея:', error);
-            // Размещаем оверлей в безопасном месте
-            element.style.left = (100 + index * 280) + 'px';
-            element.style.top = (100 + index * 100) + 'px';
-        }
-    },
 
     // Добавление пешеходного маршрута с расчётом времени
     addRoute() {
@@ -453,11 +396,34 @@ const App = {
         // Установить изображение
         this.modalImage.src = location.image;
         this.modalImage.alt = location.title;
+        // Сбросить предыдущие обработчики
+        this.modalImage.onerror = null;
+        this.modalImage.onload = null;
         // Обработка ошибки загрузки изображения
         this.modalImage.onerror = () => {
             console.error('Не удалось загрузить изображение:', location.image);
-            this.modalImage.src = ''; // можно установить placeholder
+            // Установить placeholder изображение (SVG)
+            this.modalImage.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300"><rect width="400" height="300" fill="%23f0f0f0"/><text x="200" y="150" font-family="Arial" font-size="18" text-anchor="middle" fill="%23999">Изображение недоступно</text></svg>';
+            this.modalImage.alt = 'Изображение недоступно';
+            this.modalImage.classList.add('image-error');
         };
+        // Успешная загрузка
+        this.modalImage.onload = () => {
+            this.modalImage.classList.remove('image-error');
+        };
+
+        // Заполнить детали
+        const modalTitle = document.getElementById('modal-title');
+        const modalConstructionDate = document.getElementById('modal-construction-date');
+        const modalArchitect = document.getElementById('modal-architect');
+        const modalHistoricalData = document.getElementById('modal-historical-data');
+        const modalArchitecturalFeatures = document.getElementById('modal-architectural-features');
+
+        if (modalTitle) modalTitle.textContent = location.title;
+        if (modalConstructionDate) modalConstructionDate.textContent = location.construction_date || 'Не указано';
+        if (modalArchitect) modalArchitect.textContent = location.architect || 'Не указано';
+        if (modalHistoricalData) modalHistoricalData.textContent = location.historical_data || 'Не указано';
+        if (modalArchitecturalFeatures) modalArchitecturalFeatures.textContent = location.architectural_features || 'Не указано';
 
         // Очистить и заполнить карусель фактов
         const swiperWrapper = document.querySelector('.swiper-wrapper');
