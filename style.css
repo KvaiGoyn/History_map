@@ -54,9 +54,9 @@ html, body {
     border-radius: 16px;
     width: 90%;
     max-width: 800px;
-    /* Ограничиваем высоту, но убираем внутреннюю прокрутку */
+    /* Ограничиваем высоту, убираем прокрутку */
     max-height: 90vh;
-    overflow: hidden; /* Вместо auto */
+    overflow: hidden; /* Убираем прокрутку, контент должен помещаться */
     padding: 1.5rem;
     position: relative;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
@@ -65,6 +65,8 @@ html, body {
     border: 1px solid rgba(255, 255, 255, 0.2);
     display: flex;
     flex-direction: column;
+    /* Распределение пространства между блоками */
+    justify-content: space-between;
 }
 
 @keyframes modalAppear {
@@ -102,21 +104,25 @@ html, body {
 
 #modal-image {
     width: 100%;
-    max-height: 220px; /* Уменьшено для компактности */
+    max-height: 180px; /* Уменьшено ещё для компактности */
     object-fit: cover;
     border-radius: 12px;
-    margin-bottom: 0.8rem; /* Уменьшено */
+    margin-bottom: 0.6rem; /* Уменьшено */
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
     border: 1px solid #eee;
+    flex-shrink: 0; /* Не сжимается */
 }
 
 /* Детали локации */
 .modal-details {
-    margin-bottom: 1rem; /* Уменьшено ещё */
-    padding: 1rem; /* Уменьшено ещё */
+    margin-bottom: 0.8rem; /* Уменьшено ещё */
+    padding: 0.8rem; /* Уменьшено ещё */
     background: #f8f9fa;
     border-radius: 12px;
     border-left: 5px solid #4a90e2;
+    flex: 1 1 auto; /* Занимает доступное пространство */
+    min-height: 0; /* Позволяет сжиматься */
+    overflow: hidden; /* Обрезаем переполнение */
 }
 
 .modal-details h2 {
@@ -131,14 +137,14 @@ html, body {
 
 .details-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 0.75rem;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Уменьшена минимальная ширина */
+    gap: 0.5rem; /* Уменьшен промежуток */
 }
 
 .detail-item {
     display: flex;
     flex-direction: column;
-    padding: 0.6rem;
+    padding: 0.5rem; /* Уменьшен padding */
     background: white;
     border-radius: 8px;
     box-shadow: 0 2px 6px rgba(0,0,0,0.05);
@@ -146,26 +152,28 @@ html, body {
 
 .detail-item strong {
     color: #555;
-    font-size: 0.9rem;
-    margin-bottom: 0.25rem;
+    font-size: 0.85rem; /* Уменьшен шрифт */
+    margin-bottom: 0.2rem;
 }
 
 .detail-item span {
     color: #222;
-    font-size: 1rem;
-    line-height: 1.4;
+    font-size: 0.9rem; /* Уменьшен шрифт */
+    line-height: 1.3; /* Уменьшен межстрочный интервал */
 }
 
 /* Карусель фактов (Swiper) */
 .facts-carousel {
     width: 100%;
-    margin-top: 0.8rem;
+    margin-top: 0.6rem; /* Уменьшен отступ сверху */
     flex-shrink: 0;
+    min-height: 100px; /* Уменьшена минимальная высота */
+    display: block;
 }
 
 .factsSwiper {
     width: 100%;
-    height: 120px; /* Фиксированная высота карусели */
+    height: 100px; /* Уменьшена фиксированная высота карусели */
     border-radius: 12px;
     overflow: hidden;
     background: #f8f9fa;
@@ -323,42 +331,43 @@ html, body {
     .modal-content {
         width: 95%;
         max-width: calc(100vw - 40px);
-        padding: 1.2rem; /* Уменьшено ещё */
+        padding: 1rem; /* Уменьшено ещё */
         border-radius: 14px;
         max-height: 90vh; /* Увеличено для вместимости */
-        overflow: hidden; /* Убрана прокрутка */
+        overflow: hidden; /* Убираем прокрутку */
         margin: 0 auto;
+        justify-content: space-between; /* Распределение пространства */
     }
 
     #modal-image {
-        max-height: 200px; /* Уменьшено для компактности */
+        max-height: 180px; /* Уменьшено для компактности */
         border-radius: 10px;
     }
 
     .modal-details {
-        padding: 0.9rem;
+        padding: 0.8rem;
     }
 
     .details-grid {
         grid-template-columns: 1fr;
-        gap: 0.6rem;
+        gap: 0.5rem;
     }
 
     .modal-details h2 {
-        font-size: 1.4rem;
+        font-size: 1.3rem; /* Уменьшено */
     }
 
     .facts-carousel {
-        margin-top: 0.6rem;
+        margin-top: 0.5rem;
     }
 
     .factsSwiper {
-        height: 100px; /* Уменьшенная высота на мобильных */
+        height: 90px; /* Уменьшенная высота на мобильных */
     }
 
     .swiper-slide {
-        font-size: 0.85rem;
-        padding: 0.8rem;
+        font-size: 0.8rem;
+        padding: 0.7rem;
     }
 
     .close {
@@ -370,71 +379,72 @@ html, body {
 
 @media (max-width: 480px) {
     .modal-content {
-        padding: 0.9rem; /* Уменьшено ещё */
+        padding: 0.8rem; /* Уменьшено ещё */
         width: 98%;
         max-width: calc(100vw - 20px);
         max-height: 85vh; /* Увеличено для вместимости */
-        overflow: hidden; /* Убрана прокрутка */
+        overflow: hidden; /* Убираем прокрутку */
         margin: 0 auto;
+        justify-content: space-between;
     }
 
     #modal-image {
-        max-height: 160px; /* Уменьшено ещё */
+        max-height: 150px; /* Уменьшено ещё */
     }
 
     .modal-details {
-        padding: 0.7rem;
+        padding: 0.6rem;
     }
 
     .details-grid {
         grid-template-columns: 1fr;
-        gap: 0.4rem;
+        gap: 0.3rem;
     }
 
     .modal-details h2 {
-        font-size: 1.2rem;
+        font-size: 1.1rem;
     }
 
     .detail-item {
-        padding: 0.4rem;
+        padding: 0.3rem;
     }
 
     .detail-item strong {
-        font-size: 0.8rem;
+        font-size: 0.75rem;
     }
 
     .detail-item span {
-        font-size: 0.85rem;
+        font-size: 0.8rem;
     }
 
     .facts-carousel {
-        margin-top: 0.5rem;
+        margin-top: 0.4rem;
     }
 
     .factsSwiper {
-        height: 90px; /* Ещё меньше на очень маленьких экранах */
+        height: 80px; /* Ещё меньше на очень маленьких экранах */
     }
 
     .swiper-slide {
-        font-size: 0.8rem;
-        padding: 0.6rem;
+        font-size: 0.75rem;
+        padding: 0.5rem;
     }
 
     .swiper-button-next,
     .swiper-button-prev {
-        width: 30px;
-        height: 30px;
+        width: 28px;
+        height: 28px;
     }
 
     .swiper-button-next:after,
     .swiper-button-prev:after {
-        font-size: 0.9rem;
+        font-size: 0.8rem;
     }
 
     .close {
-        font-size: 1.8rem;
+        font-size: 1.6rem;
         top: 0.5rem;
-        right: 1rem;
+        right: 0.8rem;
     }
 }
 
@@ -559,10 +569,10 @@ html, body {
 .modal-content::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
-
 /* Для Firefox */
 .modal-content {
     scrollbar-width: thin;
     scrollbar-color: #888 #f1f1f1;
 }
+
 

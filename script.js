@@ -335,18 +335,26 @@ const App = {
     extractFacts(content) {
         // Разбиваем на строки
         const lines = content.split('\n').map(line => line.trim()).filter(line => line.length > 0);
+        console.log('extractFacts: lines', lines);
         const facts = [];
         for (const line of lines) {
             // Пропускаем заголовки (начинаются с #)
-            if (line.startsWith('#')) continue;
+            if (line.startsWith('#')) {
+                console.log('extractFacts: пропуск заголовка', line);
+                continue;
+            }
             // Если строка - элемент маркированного списка, убираем маркер
             if (line.startsWith('-') || line.startsWith('*')) {
-                facts.push(line.substring(1).trim());
+                const fact = line.substring(1).trim();
+                console.log('extractFacts: добавлен факт', fact);
+                facts.push(fact);
             } else {
                 // Иначе добавляем как есть (можно разбить по точкам, но оставим пока)
+                console.log('extractFacts: добавлена строка', line);
                 facts.push(line);
             }
         }
+        console.log('extractFacts: итого фактов', facts.length, facts);
         // Если фактов нет, возвращаем пустой массив
         return facts.length > 0 ? facts : ['Информация отсутствует.'];
     },
@@ -554,4 +562,18 @@ const App = {
 // Запуск приложения после загрузки DOM
 document.addEventListener('DOMContentLoaded', async () => {
     await App.init();
+    // Автоматическое открытие модального окна для тестирования карусели
+    setTimeout(() => {
+        if (App.locations && App.locations.length > 0) {
+            const vasilievsky = App.locations.find(loc => loc.id === 3);
+            if (vasilievsky) {
+                console.log('Автоматическое открытие модального окна для локации:', vasilievsky.title);
+                App.showLocation(vasilievsky);
+            } else {
+                console.warn('Локация с id=3 не найдена');
+            }
+        } else {
+            console.warn('Локации не загружены');
+        }
+    }, 1000);
 });
