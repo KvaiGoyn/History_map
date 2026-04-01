@@ -429,6 +429,18 @@ html, body {
     pointer-events: auto;
 }
 
+/* Общий класс для скрытия элементов */
+.hidden {
+    display: none !important;
+}
+
+/* Дополнительное правило для индикатора загрузки */
+.loader.hidden {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+}
+
 .error-message > div {
     background: white;
     padding: 30px;

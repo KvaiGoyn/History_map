@@ -483,7 +483,16 @@ const App = {
     hideLoader() {
         console.log('hideLoader вызван');
         if (this.loader) {
+            console.log('Элемент loader найден, добавляем класс hidden');
             this.loader.classList.add('hidden');
+            // Проверяем, добавился ли класс
+            console.log('Классы элемента loader:', this.loader.className);
+            const computedStyle = window.getComputedStyle(this.loader);
+            console.log('Стиль display:', computedStyle.display);
+            console.log('Стиль visibility:', computedStyle.visibility);
+            console.log('Стиль opacity:', computedStyle.opacity);
+            console.log('offsetHeight:', this.loader.offsetHeight);
+            console.log('getBoundingClientRect:', this.loader.getBoundingClientRect());
         } else {
             console.warn('Элемент loader не найден');
         }
